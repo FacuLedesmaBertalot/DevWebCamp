@@ -1,5 +1,1 @@
-@use 'base/mixins' as m;
-
-.auth {
-    @include m.contenedor-sm;
-}
+@forward 'auth';
