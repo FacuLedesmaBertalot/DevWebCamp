@@ -48,6 +48,10 @@
     grid-template-columns: repeat($columnas, 1fr);
 }
 
+@mixin contenedor {
+    width: min(95%, 160rem);
+    margin: 0 auto;
+}
 @mixin contenedor-sm {
     width: min(95%, 60rem);
     margin: 0 auto;
@@ -63,4 +67,12 @@
     @include headings;
     margin: 6rem 0 3rem 0;
     text-align: center;
+}
+
+@mixin texto-fluido($min, $max) {
+    font-size: clamp($min, -0.8rem + 10vw , $max);
+}
+
+@mixin texto-degradado {
+
 }
