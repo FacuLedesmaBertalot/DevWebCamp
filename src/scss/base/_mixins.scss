@@ -49,7 +49,7 @@
 }
 
 @mixin contenedor {
-    width: min(95%, 160rem);
+    width: min(95%, 140rem);
     margin: 0 auto;
 }
 @mixin contenedor-sm {
@@ -73,6 +73,8 @@
     font-size: clamp($min, -0.8rem + 10vw , $max);
 }
 
-@mixin texto-degradado {
-
+@mixin texto-degradado($inicio, $final) {
+    background: linear-gradient(to right, $inicio, $final);
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
 }
