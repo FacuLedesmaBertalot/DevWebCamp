@@ -66,7 +66,8 @@
         padding: 1.5rem;
         transition: 300ms background-color ease-in-out, 300ms color ease, 300ms border-radius ease;
 
-        &:hover {
+        &:hover,
+        &--actual {
             background-color: color.scale(v.$gris-oscuro, $lightness: 20%);
             color: v.$blanco;
             border-radius: 1rem;
