@@ -12,7 +12,7 @@ class PonentesController {
         $ponentes = Ponente::all();
 
 
-        $router->render('admin/ponentes/index',[
+        $router->render('admin/ponentes/index', [
             'titulo' => 'Ponentes / Conferencias',
             'ponentes' => $ponentes
         ]);
@@ -32,10 +32,10 @@ class PonentesController {
                     mkdir($carpeta_imagenes, 0777, true);
                 }
 
-                $image_png = Image::make($_FILES['imagen']['tmp_name'])->fit(800,800)->encode('png', 80);
-                $image_webp = Image::make($_FILES['imagen']['tmp_name'])->fit(800,800)->encode('webp', 80);
+                $image_png = Image::make($_FILES['imagen']['tmp_name'])->fit(800, 800)->encode('png', 80);
+                $image_webp = Image::make($_FILES['imagen']['tmp_name'])->fit(800, 800)->encode('webp', 80);
 
-                $nombre_imagen= md5(uniqid( rand(), true));
+                $nombre_imagen = md5(uniqid(rand(), true));
 
                 $_POST['imagen'] = $nombre_imagen;
             }
@@ -62,8 +62,8 @@ class PonentesController {
                 }
             }
         }
-        
-        $router->render('admin/ponentes/crear',[
+
+        $router->render('admin/ponentes/crear', [
             'titulo' => 'Registrar Ponente',
             'alertas' => $alertas,
             'ponente' => $ponente,
@@ -72,9 +72,9 @@ class PonentesController {
     }
 
     public static function editar(Router $router) {
-        
+
         $alertas = [];
-        
+
         // Validar el id
         $id = $_GET['id'];
         $id = filter_var($id, FILTER_VALIDATE_INT);
@@ -104,10 +104,10 @@ class PonentesController {
                     mkdir($carpeta_imagenes, 0777, true);
                 }
 
-                $image_png = Image::make($_FILES['imagen']['tmp_name'])->fit(800,800)->encode('png', 80);
-                $image_webp = Image::make($_FILES['imagen']['tmp_name'])->fit(800,800)->encode('webp', 80);
+                $image_png = Image::make($_FILES['imagen']['tmp_name'])->fit(800, 800)->encode('png', 80);
+                $image_webp = Image::make($_FILES['imagen']['tmp_name'])->fit(800, 800)->encode('webp', 80);
 
-                $nombre_imagen= md5(uniqid( rand(), true));
+                $nombre_imagen = md5(uniqid(rand(), true));
 
                 $_POST['imagen'] = $nombre_imagen;
             } else {
@@ -132,16 +132,33 @@ class PonentesController {
                 }
             }
         }
-        
 
-        $router->render('admin/ponentes/editar',[
+
+        $router->render('admin/ponentes/editar', [
             'titulo' => 'Actualizar Ponente',
             'alertas' => $alertas,
             'ponente' => $ponente,
             'redes' => json_decode($ponente->redes)
         ]);
     }
+
+
+    public static function eliminar() {
+
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+
+            $id = $_POST['id'];
+            $ponente = Ponente::find($id);
+
+            if (!isset($ponente)) {
+                header('Location: /admin/ponentes');
+            }
+
+            $resultado = $ponente->eliminar();
+
+            if ($resultado) {
+                header('Location: /admin/ponentes');
+            }
+        }
+    }
 }
-
-
-?>
