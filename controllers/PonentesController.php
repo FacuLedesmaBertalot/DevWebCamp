@@ -93,9 +93,46 @@ class PonentesController {
         // --- ESTA LÍNEA ES LA SOLUCIÓN AL ERROR ROJO $ponente->imagen---
         /** @var \Model\Ponente $ponente->imagen */
         $ponente->imagen_actual = $ponente->imagen;
+
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+
+            if (!empty($_FILES['imagen']['tmp_name'])) {
+                $carpeta_imagenes = '../public/img/speakers';
+
+                // Crear la carpeta si no existe
+                if (!is_dir($carpeta_imagenes)) {
+                    mkdir($carpeta_imagenes, 0777, true);
+                }
+
+                $image_png = Image::make($_FILES['imagen']['tmp_name'])->fit(800,800)->encode('png', 80);
+                $image_webp = Image::make($_FILES['imagen']['tmp_name'])->fit(800,800)->encode('webp', 80);
+
+                $nombre_imagen= md5(uniqid( rand(), true));
+
+                $_POST['imagen'] = $nombre_imagen;
+            } else {
+                $_POST['imagen'] = $ponente->imagen_actual;
+            }
+
+            $_POST['redes'] = json_encode($_POST['redes'], JSON_UNESCAPED_SLASHES);
+            $ponente->sincronizar($_POST);
+
+            $alertas = $ponente->validar();
+
+            if (empty($alertas)) {
+                if (isset($nombre_imagen)) {
+                    $image_png->save($carpeta_imagenes . '/' . $nombre_imagen . ".png");
+                    $image_webp->save($carpeta_imagenes . '/' . $nombre_imagen . ".webp");
+                }
+
+                $resultado = $ponente->guardar();
+
+                if ($resultado) {
+                    header('Location: /admin/ponentes');
+                }
+            }
+        }
         
-
-
 
         $router->render('admin/ponentes/editar',[
             'titulo' => 'Actualizar Ponente',
