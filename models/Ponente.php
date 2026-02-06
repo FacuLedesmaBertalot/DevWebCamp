@@ -15,6 +15,9 @@ class Ponente extends ActiveRecord {
     public $tags;
     public $redes;
 
+    // Variable temporal
+    public $imagen_actual;
+
     
     public function __construct($args = [])
     {
