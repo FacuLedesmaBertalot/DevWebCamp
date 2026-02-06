@@ -66,7 +66,8 @@ class PonentesController {
         $router->render('admin/ponentes/crear',[
             'titulo' => 'Registrar Ponente',
             'alertas' => $alertas,
-            'ponente' => $ponente
+            'ponente' => $ponente,
+            'redes' => json_decode($ponente->redes)
         ]);
     }
 
@@ -92,13 +93,15 @@ class PonentesController {
         // --- ESTA LÍNEA ES LA SOLUCIÓN AL ERROR ROJO $ponente->imagen---
         /** @var \Model\Ponente $ponente->imagen */
         $ponente->imagen_actual = $ponente->imagen;
+        
 
 
 
         $router->render('admin/ponentes/editar',[
             'titulo' => 'Actualizar Ponente',
             'alertas' => $alertas,
-            'ponente' => $ponente
+            'ponente' => $ponente,
+            'redes' => json_decode($ponente->redes)
         ]);
     }
 }
