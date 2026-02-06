@@ -89,6 +89,8 @@ class PonentesController {
             header('Location: /admin/ponentes');
         }
 
+        // --- ESTA LÍNEA ES LA SOLUCIÓN AL ERROR ROJO $ponente->imagen---
+        /** @var \Model\Ponente $ponente->imagen */
         $ponente->imagen_actual = $ponente->imagen;
 
 
