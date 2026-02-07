@@ -2,6 +2,7 @@
 
 namespace Controllers;
 
+use Classes\Paginacion;
 use Intervention\Image\ImageManagerStatic as Image;
 use Model\Ponente;
 use MVC\Router;
@@ -9,6 +10,14 @@ use MVC\Router;
 class PonentesController {
 
     public static function index(Router $router) {
+        $pagina_actual = 1;
+        $registros_por_pagina = 10;
+        $total = 10;
+
+        $paginacion = new Paginacion($pagina_actual, $registros_por_pagina, $total);
+
+        debuguear($paginacion);
+        
         $ponentes = Ponente::all();
 
         if (!is_admin()) {
