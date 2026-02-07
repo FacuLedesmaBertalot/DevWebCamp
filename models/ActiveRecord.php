@@ -132,6 +132,13 @@ class ActiveRecord {
         return $resultado; // <--- CORREGIDO: Devuelve todos, no usar array_shift aca
     }
 
+    // Paginar los registros
+    public static function paginar($por_pagina, $offset) {
+        $query = "SELECT * FROM " . static::$tabla . " ORDER BY id DESC LIMIT {$por_pagina} OFFSET {$offset} ";
+        $resultado = self::consultarSQL($query);
+        return $resultado;
+    }
+
     // Busca un registro por su id
     public static function where($columna, $valor) {
         $valor = self::$db->escape_string($valor); // <--- CORREGIDO: Seguridad añadida
