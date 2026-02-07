@@ -22,7 +22,7 @@ class PonentesController {
         $total = Ponente::total();
         $paginacion = new Paginacion($pagina_actual, $registros_por_pagina, $total);
 
-        
+
 
         $ponentes = Ponente::all();
 
@@ -32,7 +32,8 @@ class PonentesController {
 
         $router->render('admin/ponentes/index', [
             'titulo' => 'Ponentes / Conferencias',
-            'ponentes' => $ponentes
+            'ponentes' => $ponentes,
+            'paginacion' => $paginacion->paginacion()
         ]);
     }
 
