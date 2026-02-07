@@ -140,6 +140,15 @@ class ActiveRecord {
         return array_shift($resultado);
     }
 
+    // Traer un total de registros
+    public static function total() {
+        $query = "SELECT COUNT(*) FROM " . static::$tabla;
+        $resultado = self::$db->query($query);
+        $total = $resultado->fetch_array();
+
+        return array_shift($total);
+    }
+
     // Busca todos los registros que pertenecen a un ID
     public static function belongsTo($columna, $valor) {
         $valor = self::$db->escape_string($valor); // <--- CORREGIDO: Seguridad añadida
