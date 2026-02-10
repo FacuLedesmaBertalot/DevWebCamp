@@ -31,11 +31,18 @@
 
             const resultado = await fetch(url);
             const eventos = await resultado.json();
-
             obtenerHorasDisponibles();
         }
 
-        function obtenerHorasDisponibles() {
+        function obtenerHorasDisponibles(eventos) {
+            // Comprobar eventos ya tomados, y quitar la variable de deshabilitado
+            const horasTomadas = eventos.map(evento => evento.hora_id);
+            const listadoHoras = document.querySelectorAll('#horas li');
+            // const resultado = listadoHoras.filter( li => horasTomadas.includes(li.dataset.horaId));
+            
+
+
+
             const horasDisponibles = document.querySelectorAll('#horas li')
             horasDisponibles.forEach(hora => hora.addEventListener('click', seleccionarHora));
 
