@@ -21,6 +21,7 @@
             // Reiniciar los campos ocultos y el selector de horas
             inputHiddenHora.value = '';
             inputHiddenDia.value = '';
+            
             const horaPrevia = document.querySelector('.horas__hora--seleccionada');
             if (horaPrevia) {
                 horaPrevia.classList.remove('horas__hora--seleccionada');
