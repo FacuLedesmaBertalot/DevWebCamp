@@ -20,8 +20,8 @@
             id="descripcion"
             class="formulario__input"
             rows="8"
-            ><?php echo $evento->descripcion; ?>
-        </textarea>
+            placeholder="Descripción Evento"
+            ><?php echo $evento->descripcion; ?></textarea>
     </div>
 
     <div class="formulario__campo">
