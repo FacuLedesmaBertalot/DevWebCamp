@@ -64,10 +64,10 @@ class PaginasController {
             }
         }
 
-        debuguear($eventos_formateados);
 
         $router->render('paginas/conferencias', [
-            'titulo' => 'Conferencias & Workshops'
+            'titulo' => 'Conferencias & Workshops',
+            'eventos' => $eventos_formateados
         ]);
     }
 }
