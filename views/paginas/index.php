@@ -5,22 +5,22 @@ include_once __DIR__ . '/conferencias.php';
 <section class="resumen">
     <div class="resumen__grid">
 
-        <div class="resumen__bloque">
+        <div data-aos="fade-down" class="resumen__bloque">
             <p class="resumen__texto resumen__texto--numero"><?php echo $ponentes_total; ?></p>
             <p class="resumen__texto">Speakers</p>
         </div>
 
-        <div class="resumen__bloque">
+        <div data-aos="fade-down" class="resumen__bloque">
             <p class="resumen__texto resumen__texto--numero"><?php echo $conferencias_total; ?></p>
             <p class="resumen__texto">Conferencias</p>
         </div>
 
-        <div class="resumen__bloque">
+        <div data-aos="fade-down" class="resumen__bloque">
             <p class="resumen__texto resumen__texto--numero"><?php echo $workshops_total; ?></p>
             <p class="resumen__texto">Workshops</p>
         </div>
 
-        <div class="resumen__bloque">
+        <div data-aos="fade-down" class="resumen__bloque">
             <p class="resumen__texto resumen__texto--numero">500</p>
             <p class="resumen__texto">Asistentes</p>
         </div>
@@ -34,7 +34,7 @@ include_once __DIR__ . '/conferencias.php';
 
     <div class="speakers__grid">
         <?php foreach ($ponentes as $ponente) { ?>
-            <div class="speaker">
+            <div data-aos="zoom-in" class="speaker">
                 <picture>
                     <source srcset="img/speakers/<?php echo $ponente->imagen; ?>.webp" type="image/webp">
                     <source srcset="img/speakers/<?php echo $ponente->imagen; ?>.png" type="image/png">
@@ -110,7 +110,9 @@ include_once __DIR__ . '/conferencias.php';
 
 <div id="mapa" class="mapa"></div>
 
-<section class="boletos">
+<section class="boletos" data-aos="fade-down"
+    data-aos-easing="linear"
+    data-aos-duration="500">
     <h2 class="boletos__heading">Boletos & Precios</h2>
     <p class="boletos__descripcion">Precios Para DevWebCamp</p>
 
