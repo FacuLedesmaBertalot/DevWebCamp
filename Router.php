@@ -48,7 +48,7 @@ class Router
             // ESTA LÍNEA ES LA QUE CARGA TU PÁGINA
             call_user_func($fn, $this);
         } else {
-            echo "Página No Encontrada o Ruta no válida";
+            header('Location: /404');
         }
     }
 
