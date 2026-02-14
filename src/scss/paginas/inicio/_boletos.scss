@@ -6,13 +6,14 @@
     &__grid {
         @include m.contenedor-sm;
         @include m.grid(1, 5rem);
+        margin: 2rem auto;
     }
 }
 
 
 .boleto {
     width: min(100% - 5rem, 65rem);
-    margin: 2rem;
+    margin: 0 auto;
     padding: 6rem;
     border-radius: 2rem;
     color: v.$blanco;
