@@ -3,14 +3,21 @@
 namespace Controllers;
 
 use Dotenv\Util\Regex;
+use Model\Categoria;
+use Model\Dia;
+use Model\Evento;
+use Model\Hora;
 use Model\Paquete;
+use Model\Ponente;
 use Model\Registro;
 use Model\Usuario;
 use MVC\Router;
 
-class RegistroController {
+class RegistroController
+{
 
-    public static function crear(Router $router) {
+    public static function crear(Router $router)
+    {
 
         if (!is_auth()) {
             header('Location: /');
@@ -28,7 +35,8 @@ class RegistroController {
         ]);
     }
 
-    public static function gratis(Router $router) {
+    public static function gratis(Router $router)
+    {
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
@@ -62,7 +70,8 @@ class RegistroController {
         }
     }
 
-    public static function boleto(Router $router) {
+    public static function boleto(Router $router)
+    {
         // Validar la URL
         $id = $_GET['id'];
 
@@ -88,7 +97,8 @@ class RegistroController {
     }
 
 
-    public static function pagar(Router $router) {
+    public static function pagar(Router $router)
+    {
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
@@ -118,5 +128,52 @@ class RegistroController {
                 ]);
             }
         }
+    }
+
+    public static function conferencias(Router $router) {
+
+        if (!is_auth()) {
+            header('Location: /login');
+        }
+
+        // Validar que el usuario tenga el plan presencial
+        $usuario_id = $_SESSION['id'];
+        $registro = Registro::where('usuario_id', $usuario_id);
+
+        if ($registro->paquete_id !== "1") {
+            header('Location: /');
+        }
+
+        $eventos = Evento::ordenar('hora_id', 'ASC');
+
+        $eventos_formateados = [];
+        foreach ($eventos as $evento) {
+            $evento->categoria = Categoria::find($evento->categoria_id);
+            $evento->dia = Dia::find($evento->dia_id);
+            $evento->hora = Hora::find($evento->hora_id);
+            $evento->ponente = Ponente::find($evento->ponente_id);
+
+            // Conferencias dia Viernes
+            if ($evento->dia_id === "1" && $evento->categoria_id === "1") {
+                $eventos_formateados['conferencias_v'][] = $evento;
+            }
+            // Conferencias dia Sábado
+            if ($evento->dia_id === "2" && $evento->categoria_id === "1") {
+                $eventos_formateados['conferencias_s'][] = $evento;
+            }
+            // Workshops dia Viernes
+            if ($evento->dia_id === "1" && $evento->categoria_id === "2") {
+                $eventos_formateados['workshops_v'][] = $evento;
+            }
+            // Workshops dia Sábado
+            if ($evento->dia_id === "2" && $evento->categoria_id === "2") {
+                $eventos_formateados['workshops_s'][] = $evento;
+            }
+        }
+
+        $router->render('registro/conferencias', [
+            'titulo' => 'Elige Workshops y Conferencias',
+            'eventos' => $eventos_formateados
+        ]);
     }
 }
