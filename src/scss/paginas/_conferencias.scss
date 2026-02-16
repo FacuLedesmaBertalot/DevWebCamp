@@ -55,7 +55,7 @@
         transition: 300ms background-color ease;
 
         &:hover {
-            background-color: color.scale(v.$azul, $lightness: -30%)
+            background-color: color.scale(v.$azul, $lightness: -30%);
         }
     }
 
