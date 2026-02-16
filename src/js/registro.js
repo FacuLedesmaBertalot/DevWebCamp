@@ -73,50 +73,64 @@ import Swal from "sweetalert2";
     }
 
     function eliminarEvento(id) {
-      eventos = eventos.filter((evento) => evento.id !== id);
-      const botonAgregar = document.querySelector(`[data-id="${id}"]`);
-      botonAgregar.disabled = false;
-      mostrarEventos();
+        eventos = eventos.filter((evento) => evento.id !== id);
+        const botonAgregar = document.querySelector(`[data-id="${id}"]`);
+        botonAgregar.disabled = false;
+        mostrarEventos();
     }
 
     function limpiarEventos() {
-      while (resumen.firstChild) {
+        while (resumen.firstChild) {
         resumen.removeChild(resumen.firstChild);
-      }
+        }
     }
 
     async function submitFormulario(e) {
-      e.preventDefault();
+        e.preventDefault();
 
-      // Obtener regalo
-      const regaloId = document.querySelector("#regalo").value;
+        // Obtener regalo
+        const regaloId = document.querySelector("#regalo").value;
+        const eventosId = eventos.map((evento) => evento.id);
 
-      const eventosId = eventos.map((evento) => evento.id);
+        if (eventosId.length === 0 || regaloId === "") {
+            Swal.fire({
+                title: "Error",
+                text: "Elige al Menos un Evento y un Regalo",
+                icon: "error",
+                confirmButtonText: "OK",
+                confirmButtonColor: "#007df4",
+            });
+            return;
+        }
 
-      if (eventosId.length === 0 || regaloId === "") {
-        Swal.fire({
-          title: "Error",
-          text: "Elige al Menos un Evento y un Regalo",
-          icon: "error",
-          confirmButtonText: "OK",
-          confirmButtonColor: "#007df4",
-        });
-        return;
-      }
+        // Obj de formdata
+        const datos = new FormData();
+        datos.append('eventos', eventosId);
+        datos.append('regalo_id', regaloId);
 
-      // Obj de formdata
-      const datos = new FormData();
-      datos.append('eventos', eventosId);
-      datos.append('regalo_id', regaloId);
+        const url = '/finalizar-registro/conferencias';
+        const respuesta = await fetch(url, {
+            method: 'POST',
+            body: datos
+        })
+        const resultado = await respuesta.json();
 
-      const url = '/finalizar-registro/conferencias';
-      const respuesta = await fetch(url, {
-        method: 'POST',
-        body: datos
-      })
-      const resultado = await respuesta.json();
-
-      console.log(resultado);
+        if (resultado.resultado) {
+            Swal.fire({
+            title: 'Registro Exitoso',
+            text: 'Tus Conferencias se han Almacenado y tu Registro fue Exitoso, te Esperamos en DevWebCamp',
+            icon: 'success',
+            confirmButtonColor: '#007df4'
+            }).then( () => location.href = `/boleto?id=${resultado.token}`);
+        } else {
+            Swal.fire({
+                title: "Error",
+                text: "Hubo Un Error",
+                icon: "error",
+                confirmButtonText: "OK",
+                confirmButtonColor: "#007df4",
+            }).then( () => location.reload());
+        }
     }
   }
 })();
