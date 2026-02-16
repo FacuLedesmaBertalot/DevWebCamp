@@ -1,49 +1,45 @@
 import Swal from "sweetalert2";
 
 (function () {
-  let eventos = [];
+    let eventos = [];
 
-  const resumen = document.querySelector("#registro-resumen");
+    const resumen = document.querySelector("#registro-resumen");
 
-  if (resumen) {
-    const eventosBoton = document.querySelectorAll(".evento__agregar");
-    eventosBoton.forEach((boton) =>
-      boton.addEventListener("click", seleccionarEvento),
-    );
+    if (resumen) {
+        const eventosBoton = document.querySelectorAll(".evento__agregar");
+        eventosBoton.forEach((boton) => boton.addEventListener("click", seleccionarEvento));
 
-    const formularioRegistro = document.querySelector("#registro");
-    formularioRegistro.addEventListener("submit", submitFormulario);
-
-    function seleccionarEvento({ target }) {
-      if (eventos.length < 5) {
-        // Deshabilitar el evento
-        target.disabled = true;
-
-        eventos = [
-          ...eventos,
-          {
-            id: target.dataset.id,
-            titulo: target.parentElement
-              .querySelector(".evento__nombre")
-              .textContent.trim(),
-          },
-        ];
+        const formularioRegistro = document.querySelector("#registro");
+        formularioRegistro.addEventListener("submit", submitFormulario);
 
         mostrarEventos();
-      } else {
-        Swal.fire({
-          title: "Error",
-          text: "Máximo 5 Eventos por Registro",
-          icon: "error",
-          confirmButtonText: "OK",
-          confirmButtonColor: "#007df4",
-        });
-      }
-    }
 
-    function mostrarEventos() {
-      // Limpiar el HTML
-      limpiarEventos();
+        function seleccionarEvento({ target }) {
+            if (eventos.length < 5) {
+            // Deshabilitar el evento
+            target.disabled = true;
+
+            eventos = [...eventos, {
+                id: target.dataset.id,
+                titulo: target.parentElement.querySelector(".evento__nombre").textContent.trim()
+                }
+            ];
+            
+            mostrarEventos();
+            } else {
+                Swal.fire({
+                    title: "Error",
+                    text: "Máximo 5 Eventos por Registro",
+                    icon: "error",
+                    confirmButtonText: "OK",
+                    confirmButtonColor: "#007df4",
+                    });
+            }
+        }
+
+        function mostrarEventos() {
+        // Limpiar el HTML
+        limpiarEventos();
 
       if (eventos.length > 0) {
         eventos.forEach((evento) => {
@@ -66,6 +62,13 @@ import Swal from "sweetalert2";
           eventoDOM.appendChild(botonEliminar);
           resumen.appendChild(eventoDOM);
         });
+
+      } else {
+        const noRegistro = document.createElement('P');
+        noRegistro.textContent = 'No Hay Eventos, añade Hasta 5 del Lado Izquierdo';
+        noRegistro.classList.add('registro__texto');
+        resumen.appendChild(noRegistro);
+
       }
     }
 
@@ -82,7 +85,7 @@ import Swal from "sweetalert2";
       }
     }
 
-    function submitFormulario(e) {
+    async function submitFormulario(e) {
       e.preventDefault();
 
       // Obtener regalo
@@ -100,7 +103,20 @@ import Swal from "sweetalert2";
         });
         return;
       }
-      console.log('registrando')
+
+      // Obj de formdata
+      const datos = new FormData();
+      datos.append('eventos', eventosId);
+      datos.append('regalo_id', regaloId);
+
+      const url = '/finalizar-registro/conferencias';
+      const respuesta = await fetch(url, {
+        method: 'POST',
+        body: datos
+      })
+      const resultado = await respuesta.json();
+
+      console.log(resultado);
     }
   }
 })();
