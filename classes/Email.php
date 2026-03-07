@@ -28,6 +28,8 @@ class Email
         $mail->Username = $_ENV['EMAIL_USER'];
         $mail->Password = $_ENV['EMAIL_PASS'];
 
+        $mail->SMTPSecure = 'ssl';
+
         $mail->setFrom('cuentas@devwebcamp.com', 'DevWebCamp'); // Puedes cambiar el nombre aquí si lo deseas
         $mail->addAddress($this->email, $this->nombre);
         $mail->Subject = 'Confirma tu Cuenta';
