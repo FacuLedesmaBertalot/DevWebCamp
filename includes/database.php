@@ -1,9 +1,9 @@
 <?php
 $db = mysqli_connect(
-    $_ENV['DB_HOST'] ?? '',
-    $_ENV['DB_USER'] ?? '', 
-    $_ENV['DB_PASS'] ?? '', 
-    $_ENV['DB_NAME'] ?? ''
+    $_SERVER['DB_HOST'] ?? '',
+    $_SERVER['DB_USER'] ?? '', 
+    $_SERVER['DB_PASS'] ?? '', 
+    $_SERVER['DB_NAME'] ?? ''
 );
 
 if (!$db) {
